@@ -1,5 +1,5 @@
-/*! typedfsm - v0.1.0 - 2014-05-01
-* https://github.com/eonarheim/TypedFSM
+/*! typestate - v1.0.0 - 2014-05-02
+* https://github.com/eonarheim/TypeState
 * Copyright (c) 2014 Erik Onarheim; Licensed BSD-2 Clause*/
 /**
 * Transition grouping to faciliate fluent api
@@ -196,4 +196,4 @@ var FiniteStateMachine = (function () {
     };
     return FiniteStateMachine;
 })();
-//# sourceMappingURL=typedfsm-0.1.0.js.map
+//# sourceMappingURL=typestate-1.0.0.js.map

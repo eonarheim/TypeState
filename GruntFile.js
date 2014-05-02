@@ -70,7 +70,7 @@ module.exports = function (grunt) {
       //
       watch: {
          scripts: {
-            files: ['src/*.ts', 'spec/TypedFSMSpec.ts'],
+            files: ['src/*.ts', 'spec/TypeStateSpec.ts'],
             tasks: ['shell:specs', 'jasmine_node'],
             options: {
                interrupt: true
@@ -87,7 +87,7 @@ module.exports = function (grunt) {
          // Execute TypeScript compiler against Excalibur core
          //
          tsc: {
-            command: 'tsc --sourcemap --declaration "./src/fsm.ts" -out "./dist/<%= pkg.name %>-<%= pkg.version %>.js"',               
+            command: 'tsc --sourcemap --declaration "./src/typestate.ts" -out "./dist/<%= pkg.name %>-<%= pkg.version %>.js"',               
             options: {
                stdout: true,
                failOnError: true
@@ -98,7 +98,7 @@ module.exports = function (grunt) {
          // Package up Nuget (Windows only)
          //
          nuget: {
-            command: 'tools\\nuget pack TypedFSM.nuspec -version <%= pkg.version %> -OutputDirectory ./dist',
+            command: 'tools\\nuget pack TypeState.nuspec -version <%= pkg.version %> -OutputDirectory ./dist',
             options: {
                stdout: true
             }
@@ -109,7 +109,7 @@ module.exports = function (grunt) {
          // TODO: Simplify this so we don't have to always update it every time we add a spec
          //
          specs: {
-            command: 'tsc "./spec/TypedFSMSpec.ts" -out "./spec/TypedFSMSpec.js"',
+            command: 'tsc "./spec/TypeStateSpec.ts" -out "./spec/TypeStateSpec.js"',
             options: {
                stdout: true,
                failOnError: true

@@ -1,5 +1,5 @@
 /// <reference path="jasmine.d.ts" />
-/// <reference path="../src/fsm.ts" />
+/// <reference path="../src/typestate.ts" />
 enum ValidStates {
       A,
       B,

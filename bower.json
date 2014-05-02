@@ -1,12 +1,12 @@
 {
-  "name": "typedfsm",
-  "version": "0.1.0",
-  "homepage": "https://github.com/eonarheim/TypedFSM",
+  "name": "typestate",
+  "version": "1.0.0",
+  "homepage": "https://github.com/eonarheim/TypeState",
   "authors": [
     "Erik Onarheim"
   ],
   "description": "A small finite state machine implementation in TypeScript.",
-  "main": "dist/typedfsm-0.1.0.js",
+  "main": "dist/typestate-1.0.0.js",
   "keywords": [
     "Finite",
     "State",

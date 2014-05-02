@@ -193,7 +193,7 @@ var FiniteStateMachine = (function () {
     };
     return FiniteStateMachine;
 })();
-/// <reference path="../src/fsm.ts" />
+/// <reference path="../src/typestate.ts" />
 /// <reference path="knockout.d.ts" />
 // Let's model the states of an elevator
 // Define an Enum with all possible valid states
