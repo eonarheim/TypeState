@@ -124,6 +124,42 @@ describe('A finite state machine', ()=>{
       expect(called).toBe(0);
    });
 
+   it('passes the "from" state to the ".on" callback', () => {
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.from(ValidStates.B).to(ValidStates.A);
+      var fromState: ValidStates;
+      fsm.on(ValidStates.B, (from: ValidStates) => {
+         fromState = from;
+      });
+      fsm.go(ValidStates.B);
+      expect(fromState).toBe(ValidStates.A);
+   });
+
+   it('passes the "from" state to the ".onEnter" callback', ()=>{
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.from(ValidStates.B).to(ValidStates.A);
+      var fromState: ValidStates;
+      fsm.onEnter(ValidStates.B, (from: ValidStates) => {
+         fromState = from;
+         return false;
+      });
+      fsm.go(ValidStates.B);
+      expect(fromState).toBe(ValidStates.A);
+   });
+
+   it('passes the "to" state to the ".onExit" callback', ()=>{
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.from(ValidStates.B).to(ValidStates.A);
+      var toState: ValidStates;
+      fsm.onExit(ValidStates.A, (to: ValidStates) => {
+         toState = to;
+         return false;
+      });
+      fsm.go(ValidStates.B);
+      expect(toState).toBe(ValidStates.B);
+      expect(fsm.currentState).toBe(ValidStates.A);
+   });
+
    it('can be reset', () => {
       fsm.from(ValidStates.A).to(ValidStates.B);
       fsm.from(ValidStates.B).to(ValidStates.C);
