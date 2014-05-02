@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/eonarheim/TypedFSM.svg)](https://travis-ci.org/eonarheim/TypedFSM)
 TypedFSM
 ========
 
