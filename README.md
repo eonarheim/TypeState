@@ -2,7 +2,7 @@
 TypedFSM
 ========
 
-A strongly typed finite state machine for TypeScript or JavaScript. Finite state machines are useful for modeling complicated flows and keeping track of state.
+TypedFSM is a strongly typed finite state machine for TypeScript or JavaScript. Finite state machines are useful for modeling complicated flows and keeping track of state.
 
 Installation methods:
 
