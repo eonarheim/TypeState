@@ -1,16 +1,16 @@
 [![Build Status](https://travis-ci.org/eonarheim/TypedFSM.svg)](https://travis-ci.org/eonarheim/TypedFSM)
-TypedFSM
+TypeState
 ========
 
-TypedFSM is a strongly typed finite state machine for TypeScript or JavaScript. Finite state machines are useful for modeling complicated flows and keeping track of state.
+TypeState is a strongly typed finite state machine for TypeScript or JavaScript. Finite state machines are useful for modeling complicated flows and keeping track of state.
 
 Installation methods:
 
-`Install-Package TypedFSM`
+`Install-Package TypeState`
 
-`npm install typedfsm`
+`npm install typestate`
 
-`bower install typedfsm`
+`bower install typestate`
 
 ###Basic Example:
 ```javascript
