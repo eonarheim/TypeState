@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+   <title>TypedFSM Example</title>
+   <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+   <label for="hands">Hands in door</label>
+   <input id="hands" type="checkbox" data-bind="checked: HandsInDoor"></input>
+   <input id="open" type="button" value="Open Doors" data-bind="click: Open, enable: CanOpen"></input>
+   <input id="close" type="button" value="Close Doors" data-bind="click: Close, enable: CanClose"></input>
+   <input id="move" type="button" value="Move" data-bind="click: Move, enable: CanMove"></input>
+   <div>Current State: <B data-bind="text: Elevator[CurrentState()]"> </b></div>
+
+   <script type="text/javascript" src="knockout-3.1.0.min.js"></script>
+   <script type="text/javascript" src="example.js"></script>
+</body>
+</html>

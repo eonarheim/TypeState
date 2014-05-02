@@ -1,0 +1,24 @@
+{
+  "name": "typedfsm",
+  "version": "0.1.0",
+  "homepage": "https://github.com/eonarheim/TypedFSM",
+  "authors": [
+    "Erik Onarheim"
+  ],
+  "description": "A small finite state machine implementation in TypeScript.",
+  "main": "dist/fsm-0.1.0.js",
+  "keywords": [
+    "Finite",
+    "State",
+    "Machine",
+    "TypeScript"
+  ],
+  "license": "BSD 2-Clause",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
