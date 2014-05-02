@@ -34,9 +34,9 @@ class FiniteStateMachine<T> {
    public currentState: T;
    private _startState: T;
    private _transitionFunctions: TransitionFunction<T>[] = [];
-   private _onCallbacks: {[key: string]: { (): void; }[]} = {};
-   private _exitCallbacks: {[key: string]:{ (): boolean; }[]} = {};
-   private _enterCallbacks: {[key: string]:{ (): boolean; }[]} = {};
+   private _onCallbacks: {[key: string]: { (from:T): void; }[]} = {};
+   private _exitCallbacks: {[key: string]:{ (to:T): boolean; }[]} = {};
+   private _enterCallbacks: {[key: string]:{ (from:T): boolean; }[]} = {};
 
    /**
     * @constructor
@@ -64,7 +64,7 @@ class FiniteStateMachine<T> {
     * @param state {T} State to listen to
     * @param callback {fcn} Callback to fire
     */
-   public on(state: T, callback: () => any): FiniteStateMachine<T> {
+   public on(state: T, callback: (from?:T) => any): FiniteStateMachine<T> {
       var key = state.toString();
       if (!this._onCallbacks[key]) {
          this._onCallbacks[key] = [];
@@ -79,7 +79,7 @@ class FiniteStateMachine<T> {
     * @param state {T} State to listen to
     * @param callback {fcn} Callback to fire
     */
-   public onEnter(state: T, callback: () => boolean): FiniteStateMachine<T>{
+   public onEnter(state: T, callback: (from?:T) => boolean): FiniteStateMachine<T>{
       var key = state.toString();
       if (!this._enterCallbacks[key]) {
          this._enterCallbacks[key] = [];
@@ -94,7 +94,7 @@ class FiniteStateMachine<T> {
     * @param state {T} State to listen to
     * @param callback {fcn} Callback to fire
     */
-   public onExit(state: T, callback: () => boolean): FiniteStateMachine<T> {
+   public onExit(state: T, callback: (to?:T) => boolean): FiniteStateMachine<T> {
       var key = state.toString();
       if (!this._exitCallbacks[key]) {
          this._exitCallbacks[key] = [];
@@ -163,17 +163,18 @@ class FiniteStateMachine<T> {
      
 
       var canExit = this._exitCallbacks[this.currentState.toString()].reduce<boolean>((accum: boolean, next: () => boolean) => {
-         return accum && (<boolean> next.call(this));
+         return accum && (<boolean> next.call(this, state));
       }, true);
 
       var canEnter = this._enterCallbacks[state.toString()].reduce<boolean>((accum: boolean, next: () => boolean) => {
-         return accum && (<boolean> next.call(this));
+         return accum && (<boolean> next.call(this, this.currentState));
       }, true);
 
       if (canExit && canEnter) {
+         var old = this.currentState;
          this.currentState = state;
          this._onCallbacks[this.currentState.toString()].forEach(fcn => {
-            fcn.call(this);
+            fcn.call(this, old);
          });
       }
    }
