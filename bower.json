@@ -6,7 +6,7 @@
     "Erik Onarheim"
   ],
   "description": "A small finite state machine implementation in TypeScript.",
-  "main": "dist/fsm-0.1.0.js",
+  "main": "dist/typedfsm-0.1.0.js",
   "keywords": [
     "Finite",
     "State",
