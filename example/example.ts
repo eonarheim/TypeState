@@ -1,4 +1,4 @@
-/// <reference path="../src/fsm.ts" />
+/// <reference path="../src/typestate.ts" />
 /// <reference path="knockout.d.ts" />
 
 // Let's model the states of an elevator
