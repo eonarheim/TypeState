@@ -5,6 +5,16 @@
    <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
+   <h2>Elevator Finite State Machine</h2>
+   <hr/>
+   <ul>
+      <li>Doors on an elevator can go from opened to closed, and vice versa</li>
+      <li>If your hands are in the door, it won't close.</li> 
+      <li>Once the doors are closed the elevator may move.</li>
+      <li>When the elevator reaches its destination, it may stop moving.</li> 
+   </ul>
+
+
    <label for="hands">Hands in door</label>
    <input id="hands" type="checkbox" data-bind="checked: HandsInDoor"></input>
    <input id="open" type="button" value="Open Doors" data-bind="click: Open, enable: CanOpen"></input>
