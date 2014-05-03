@@ -86,7 +86,7 @@ fsm.on(Elevator.DoorsClosed, ()=>{
 
 Sometimes you need to interrupt transitions. You may interrupt transitions to a state with `onEnter(STATE, CALLBACK)` and interrupt transitions from a state with the `onExit(STATE, CALLBACK)`. If the `CALLBACK` returns false the transition is canceled and the state will not change.
 
-```
+```javascript
 
 console.log("DoorsOpened", fsm.currentState === Elevator.DoorsOpened); // true
 var handsInDoor = true;
@@ -104,6 +104,26 @@ fsm.go(Elevator.DoorsClosed);
 
 // State does not change to DoorsClosed
 console.log("DoorsOpened", fsm.currentState === Elevator.DoorsOpened); //true
+
+```
+
+###Wildcard Transitions
+
+If all transitions to or from a certain state are valid, there are a convience wildcard methods `fromAny(STATE_ENUM)` and `toAny(STATE_ENUM)` for such cases.
+
+```javascript
+
+enum ValidStates {
+	A,
+	B,
+	C,
+	D
+}
+
+var newFsm = new FiniteStateMachine<ValidStates>(ValidStates.A);
+newFsm.from(ValidStates.A).toAny(ValidStates);
+newFsm.fromAny(ValidStates).to(ValidStates.B);
+
 
 ```
 

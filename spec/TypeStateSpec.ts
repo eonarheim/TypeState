@@ -67,6 +67,31 @@ describe('A finite state machine', ()=>{
       expect(fsm.currentState).toBe(ValidStates.A);
    });
 
+   it('can handle the wildcard ".fromAny()" from state', ()=>{
+      fsm.fromAny(ValidStates).to(ValidStates.B);
+
+      this.currentState = ValidStates.A;
+      expect(fsm.canGo(ValidStates.B)).toBe(true);
+
+      this.currentState = ValidStates.B;
+      expect(fsm.canGo(ValidStates.B)).toBe(true);
+
+      this.currentState = ValidStates.C;
+      expect(fsm.canGo(ValidStates.B)).toBe(true);
+
+      this.currentState = ValidStates.D;
+      expect(fsm.canGo(ValidStates.B)).toBe(true);
+   });
+
+   it('can handle the wildcard ".toAny()" to state', ()=>{
+      fsm.from(ValidStates.A).toAny(ValidStates);
+
+      expect(fsm.canGo(ValidStates.A)).toBe(true);
+      expect(fsm.canGo(ValidStates.B)).toBe(true);
+      expect(fsm.canGo(ValidStates.C)).toBe(true);
+      expect(fsm.canGo(ValidStates.D)).toBe(true);
+   });
+
    it('throws an error when transitioning to an invalid state', () => {
       fsm.from(ValidStates.A).to(ValidStates.B);
       expect(fsm.currentState).toBe(ValidStates.A);
