@@ -6,6 +6,8 @@ class Transitions<T> {
    constructor(public fsm: FiniteStateMachine<T>) { }
    public fromStates: T[];
    public toStates: T[];
+
+   
    /**
     * Specify the end state(s) of a transition function
     * @method to
@@ -14,6 +16,18 @@ class Transitions<T> {
    public to(...states: T[]) {
       this.toStates = states;
       this.fsm.addTransitions(this);
+   }
+
+   public toAny(states: any){
+      var toStates:T[] = [];
+      for(var s in states){
+         if(states.hasOwnProperty(s)){
+            toStates.push((<T>states[s]));   
+         }         
+      }
+
+       this.toStates = toStates;
+       this.fsm.addTransitions(this);
    }
 }
 
@@ -37,6 +51,7 @@ class FiniteStateMachine<T> {
    private _onCallbacks: {[key: string]: { (from:T): void; }[]} = {};
    private _exitCallbacks: {[key: string]:{ (to:T): boolean; }[]} = {};
    private _enterCallbacks: {[key: string]:{ (from:T): boolean; }[]} = {};
+
 
    /**
     * @constructor
@@ -110,6 +125,19 @@ class FiniteStateMachine<T> {
    public from(...states: T[]): Transitions<T> {
       var _transition = new Transitions<T>(this);
       _transition.fromStates = states;
+      return _transition;
+   }
+
+   public fromAny(states: any): Transitions<T> {
+      var fromStates:T[] = [];
+      for(var s in states){
+         if(states.hasOwnProperty(s)){
+            fromStates.push((<T>states[s]));   
+         }         
+      }
+
+      var _transition = new Transitions<T>(this);
+      _transition.fromStates = fromStates;
       return _transition;
    }
 
