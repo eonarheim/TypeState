@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/eonarheim/TypedFSM.svg)](https://travis-ci.org/eonarheim/TypedFSM)
+[![Build Status](https://travis-ci.org/eonarheim/TypeState.svg?branch=master)](https://travis-ci.org/eonarheim/TypeState)
 TypeState
 ========
 
