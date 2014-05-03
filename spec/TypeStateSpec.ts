@@ -7,13 +7,13 @@ enum ValidStates {
       D
 }
 describe('A finite state machine', ()=>{
-   var fsm: FiniteStateMachine<ValidStates>;
+   var fsm: TypeState.FiniteStateMachine<ValidStates>;
    beforeEach(() => {
-      fsm = new FiniteStateMachine<ValidStates>(ValidStates.A);
+      fsm = new TypeState.FiniteStateMachine<ValidStates>(ValidStates.A);
    });
 
    it('should exist', ()=>{
-      expect(FiniteStateMachine).toBeDefined();
+      expect(TypeState.FiniteStateMachine).toBeDefined();
    });
 
    it('can be instantiated with an enum', ()=>{
