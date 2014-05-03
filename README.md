@@ -72,11 +72,11 @@ TypedFSM allows you to listen to state changes. For example if the elevator star
 
 ```javascript
 
-fsm.on(Elevator.Moving, ()=>{
+fsm.on(Elevator.Moving, (from: Elevator)=>{
 	playGroovyElevatorMusic();
 });
 
-fsm.on(Elevator.DoorsClosed, ()=>{
+fsm.on(Elevator.DoorsClosed, (from: Elevator)=>{
 	stopGroovyElevatorMusic();
 });
 
@@ -92,7 +92,7 @@ console.log("DoorsOpened", fsm.currentState === Elevator.DoorsOpened); // true
 var handsInDoor = true;
 
 // Listen for transitions to DoorsClosed, if the callback returns false the transition is canceled.
-fsm.onEnter(Elevator.DoorsClosed, ()=>{
+fsm.onEnter(Elevator.DoorsClosed, (from: Elevator)=>{
    if(handsInDoor){
       return false;
    }
