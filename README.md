@@ -24,7 +24,7 @@ enum Elevator {
 }
 
 // Construct the FSM with the inital state, in this case the elevator starts with its doors opened
-var fsm = new FiniteStateMachine<Elevator>(Elevator.DoorsOpened);
+var fsm = new TypeState.FiniteStateMachine<Elevator>(Elevator.DoorsOpened);
 
 // Declare the valid state transitions to model your system
 
@@ -120,7 +120,7 @@ enum ValidStates {
 	D
 }
 
-var newFsm = new FiniteStateMachine<ValidStates>(ValidStates.A);
+var newFsm = new TypeState.FiniteStateMachine<ValidStates>(ValidStates.A);
 newFsm.from(ValidStates.A).toAny(ValidStates);
 newFsm.fromAny(ValidStates).to(ValidStates.B);
 
