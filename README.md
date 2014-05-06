@@ -53,7 +53,7 @@ fsm.canGo(Elevator.DoorsOpened); //returns true
 ```
 
 ###Using JavaScript
-JavaScript is easy with TypedFSM. The finite state machine relies on states that can be converted to strings with the `.toString()` method. So to use JavaScript simple replace the top few lines of the previous example with the following:
+JavaScript is easy with TypeState. The finite state machine relies on states that can be converted to strings with the `.toString()` method. So to use JavaScript simple replace the top few lines of the previous example with the following:
 
 ```javascript
 var Elevator = {
@@ -68,7 +68,7 @@ var fsm = new FiniteStateMachine(Elevator.DoorsOpened)
 
 
 ###Listening for state changes
-TypedFSM allows you to listen to state changes. For example if the elevator starts moving, we would like to play some elevator music. Additionally we would like to stop the music when the elevator stops.
+TypeState allows you to listen to state changes. For example if the elevator starts moving, we would like to play some elevator music. Additionally we would like to stop the music when the elevator stops.
 
 ```javascript
 
