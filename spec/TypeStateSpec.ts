@@ -197,5 +197,26 @@ describe('A finite state machine', ()=>{
       expect(fsm.currentState).toBe(ValidStates.A);
    });
 
+   it('can have the onTransition method overridden', () => {
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.from(ValidStates.B).to(ValidStates.C);
+      expect(fsm.currentState).toBe(ValidStates.A);
+      var lastFrom: ValidStates;
+      var lastTo: ValidStates;
+      fsm.onTransition = function(from: ValidStates, to: ValidStates){
+         lastFrom = from;
+         lastTo = to;
+      }
+
+      fsm.go(ValidStates.B);
+      expect(lastFrom).toBe(ValidStates.A);
+      expect(lastTo).toBe(ValidStates.B);
+
+      fsm.go(ValidStates.C);
+      expect(lastFrom).toBe(ValidStates.B);
+      expect(lastTo).toBe(ValidStates.C);
+
+   });
+
 
 });

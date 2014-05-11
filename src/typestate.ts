@@ -174,6 +174,17 @@ module TypeState {
       }
 
       /**
+       * This method is availble for overridding for the sake of extensibility. 
+       * It is called in the event of a successful transition.
+       * @method onTransition
+       * @param from {T}
+       * @param to {T}
+       */
+      public onTransition(from:T, to:T){
+         // pass, does nothing untill overidden
+      }
+
+      /**
     * Reset the finite state machine back to the start state, DO NOT USE THIS AS A SHORTCUT for a transition. This is for starting the fsm from the beginning.
     * @method reset
     */
@@ -209,6 +220,7 @@ module TypeState {
             this._onCallbacks[this.currentState.toString()].forEach(fcn => {
                fcn.call(this, old);
             });
+            this.onTransition(old, state);
          }
       }
    }
