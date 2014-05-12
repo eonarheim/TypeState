@@ -1,4 +1,4 @@
-/*! typestate - v1.0.0 - 2014-05-02
+/*! typestate - v1.0.1 - 2014-05-12
 * https://github.com/eonarheim/TypeState
 * Copyright (c) 2014 Erik Onarheim; Licensed BSD-2 Clause*/
 var TypeState;
@@ -187,6 +187,17 @@ var TypeState;
         };
 
         /**
+        * This method is availble for overridding for the sake of extensibility.
+        * It is called in the event of a successful transition.
+        * @method onTransition
+        * @param from {T}
+        * @param to {T}
+        */
+        FiniteStateMachine.prototype.onTransition = function (from, to) {
+            // pass, does nothing untill overidden
+        };
+
+        /**
         * Reset the finite state machine back to the start state, DO NOT USE THIS AS A SHORTCUT for a transition. This is for starting the fsm from the beginning.
         * @method reset
         */
@@ -222,10 +233,11 @@ var TypeState;
                 this._onCallbacks[this.currentState.toString()].forEach(function (fcn) {
                     fcn.call(_this, old);
                 });
+                this.onTransition(old, state);
             }
         };
         return FiniteStateMachine;
     })();
     TypeState.FiniteStateMachine = FiniteStateMachine;
 })(TypeState || (TypeState = {}));
-//# sourceMappingURL=typestate-1.0.0.js.map
+//# sourceMappingURL=typestate-1.0.1.js.map

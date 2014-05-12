@@ -88,6 +88,14 @@ declare module TypeState {
         */
         public go(state: T): void;
         /**
+        * This method is availble for overridding for the sake of extensibility.
+        * It is called in the event of a successful transition.
+        * @method onTransition
+        * @param from {T}
+        * @param to {T}
+        */
+        public onTransition(from: T, to: T): void;
+        /**
         * Reset the finite state machine back to the start state, DO NOT USE THIS AS A SHORTCUT for a transition. This is for starting the fsm from the beginning.
         * @method reset
         */
