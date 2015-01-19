@@ -19,9 +19,6 @@
     "url": "https://github.com/eonarheim/TypeState/issues"
   },
   "homepage": "https://github.com/eonarheim/TypeState",
-  "scripts":{
-    "preinstall": "npm i -g typescript@1.0.0"
-  },
   "devDependencies": {    
     "jasmine-node": "1.10.2",
     "grunt": "0.4.2",
