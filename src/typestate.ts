@@ -1,7 +1,6 @@
 module TypeState {
    /**
     * Transition grouping to faciliate fluent api
-    * @class Transitions<T>
     */
    export class Transitions<T> {
       constructor(public fsm: FiniteStateMachine<T>) { }
@@ -11,15 +10,16 @@ module TypeState {
 
 
       /**
-    * Specify the end state(s) of a transition function
-    * @method to
-    * @param ...states {T[]}
-    */
+       * Specify the end state(s) of a transition function
+       */
       public to(...states: T[]) {
          this.toStates = states;
          this.fsm.addTransitions(this);
       }
-
+      /**
+       * Specify that any state in the state enum is value
+       * Takes the state enum as an argument
+       */
       public toAny(states: any) {
          var toStates: T[] = [];
          for (var s in states) {
@@ -35,16 +35,14 @@ module TypeState {
 
    /**
     * Internal representation of a transition function
-    * @class TransitionFunction<T>
     */
    export class TransitionFunction<T> {
       constructor(public fsm: FiniteStateMachine<T>, public from: T, public to: T) { }
    }
 
-   /***
+   /**
     * A simple finite state machine implemented in TypeScript, the templated argument is meant to be used
     * with an enumeration.
-    * @class FiniteStateMachine<T>
     */
    export class FiniteStateMachine<T> {
       public currentState: T;
@@ -54,11 +52,6 @@ module TypeState {
       private _exitCallbacks: { [key: string]: { (to: T): boolean; }[] } = {};
       private _enterCallbacks: { [key: string]: { (from: T): boolean; }[] } = {};
 
-
-      /**
-    * @constructor
-    * @param startState {T} Intial starting state
-    */
       constructor(startState: T) {
          this.currentState = startState;
          this._startState = startState;
@@ -76,11 +69,8 @@ module TypeState {
       }
 
       /**
-    * Listen for the transition to this state and fire the associated callback
-    * @method on
-    * @param state {T} State to listen to
-    * @param callback {fcn} Callback to fire
-    */
+       * Listen for the transition to this state and fire the associated callback
+       */
       public on(state: T, callback: (from?: T) => any): FiniteStateMachine<T> {
          var key = state.toString();
          if (!this._onCallbacks[key]) {
@@ -91,12 +81,9 @@ module TypeState {
       }
 
       /**
-          * Listen for the transition to this state and fire the associated callback, returning
-          * false in the callback will block the transition to this state.
-          * @method on
-          * @param state {T} State to listen to
-          * @param callback {fcn} Callback to fire
-          */
+       * Listen for the transition to this state and fire the associated callback, returning
+       * false in the callback will block the transition to this state.
+       */
       public onEnter(state: T, callback: (from?: T) => boolean): FiniteStateMachine<T> {
          var key = state.toString();
          if (!this._enterCallbacks[key]) {
@@ -107,12 +94,9 @@ module TypeState {
       }
 
       /**
-          * Listen for the transition to this state and fire the associated callback, returning
-          * false in the callback will block the transition from this state.
-          * @method on
-          * @param state {T} State to listen to
-          * @param callback {fcn} Callback to fire
-          */
+       * Listen for the transition to this state and fire the associated callback, returning
+       * false in the callback will block the transition from this state.
+       */
       public onExit(state: T, callback: (to?: T) => boolean): FiniteStateMachine<T> {
          var key = state.toString();
          if (!this._exitCallbacks[key]) {
@@ -123,10 +107,8 @@ module TypeState {
       }
 
       /**
-          * Declares the start state(s) of a transition function, must be followed with a '.to(...endStates)'
-          * @method from
-          * @param ...states {T[]}
-          */
+       * Declares the start state(s) of a transition function, must be followed with a '.to(...endStates)'
+       */
       public from(...states: T[]): Transitions<T> {
          var _transition = new Transitions<T>(this);
          _transition.fromStates = states;
@@ -153,19 +135,15 @@ module TypeState {
       }
 
       /**
-    * Check whether a transition to a new state is valide
-    * @method canGo
-    * @param state {T}
-    */
+       * Check whether a transition to a new state is valid
+       */
       public canGo(state: T): boolean {
          return this.currentState === state || this._validTransition(this.currentState, state);
       }
 
       /**
-    * Transition to another valid state
-    * @method go
-    * @param state {T}
-    */
+       * Transition to another valid state
+       */
       public go(state: T): void {
          if (!this.canGo(state)) {
             throw new Error('Error no transition function exists from state ' + this.currentState.toString() + ' to ' + state.toString());
@@ -176,18 +154,15 @@ module TypeState {
       /**
        * This method is availble for overridding for the sake of extensibility. 
        * It is called in the event of a successful transition.
-       * @method onTransition
-       * @param from {T}
-       * @param to {T}
        */
-      public onTransition(from:T, to:T){
-         // pass, does nothing untill overidden
+      public onTransition(from: T, to: T) {
+         // pass, does nothing until overidden
       }
 
       /**
-    * Reset the finite state machine back to the start state, DO NOT USE THIS AS A SHORTCUT for a transition. This is for starting the fsm from the beginning.
-    * @method reset
-    */
+      * Reset the finite state machine back to the start state, DO NOT USE THIS AS A SHORTCUT for a transition. 
+      * This is for starting the fsm from the beginning.
+      */
       public reset(): void {
          this.currentState = this._startState;
       }
@@ -207,11 +182,11 @@ module TypeState {
 
 
          var canExit = this._exitCallbacks[this.currentState.toString()].reduce<boolean>((accum: boolean, next: () => boolean) => {
-            return accum && (<boolean> next.call(this, state));
+            return accum && (<boolean>next.call(this, state));
          }, true);
 
          var canEnter = this._enterCallbacks[state.toString()].reduce<boolean>((accum: boolean, next: () => boolean) => {
-            return accum && (<boolean> next.call(this, this.currentState));
+            return accum && (<boolean>next.call(this, this.currentState));
          }, true);
 
          if (canExit && canEnter) {
