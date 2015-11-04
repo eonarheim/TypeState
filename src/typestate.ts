@@ -39,6 +39,16 @@ module TypeState {
    export class TransitionFunction<T> {
       constructor(public fsm: FiniteStateMachine<T>, public from: T, public to: T) { }
    }
+   
+   /**
+    * Creates a hierarchical state machine, which allows the nesting of states in a super state, usefule
+    * for modeling more complicated behaviors than with just FSMs
+    * Please refer to https://en.wikipedia.org/wiki/UML_state_machine  
+    */
+   export class HierarchicalStateMachine {
+      
+      
+   }
 
    /**
     * A simple finite state machine implemented in TypeScript, the templated argument is meant to be used
@@ -51,6 +61,7 @@ module TypeState {
       private _onCallbacks: { [key: string]: { (from: T): void; }[] } = {};
       private _exitCallbacks: { [key: string]: { (to: T): boolean; }[] } = {};
       private _enterCallbacks: { [key: string]: { (from: T): boolean; }[] } = {};
+      private _invalidTransitionCallback: (to?: T, from?: T) => boolean = null;
 
       constructor(startState: T) {
          this.currentState = startState;
@@ -105,6 +116,17 @@ module TypeState {
          this._exitCallbacks[key].push(callback);
          return this;
       }
+      
+      /**
+       * List for an invalid transition and handle the error, returning a falsy value will throw an
+       * exception, a truthy one will swallow the exception
+       */
+      public onInvalidTransition(callback: (from?: T, to?: T) => boolean): FiniteStateMachine<T> {
+         if(!this._invalidTransitionCallback){
+            this._invalidTransitionCallback = callback
+         }
+         return this;
+      }
 
       /**
        * Declares the start state(s) of a transition function, must be followed with a '.to(...endStates)'
@@ -146,9 +168,12 @@ module TypeState {
        */
       public go(state: T): void {
          if (!this.canGo(state)) {
-            throw new Error('Error no transition function exists from state ' + this.currentState.toString() + ' to ' + state.toString());
+            if(!this._invalidTransitionCallback || !this._invalidTransitionCallback(this.currentState, state)){
+               throw new Error('Error no transition function exists from state ' + this.currentState.toString() + ' to ' + state.toString());
+            }
+         } else {
+            this._transitionTo(state);
          }
-         this._transitionTo(state);
       }
 
       /**

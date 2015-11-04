@@ -4,7 +4,7 @@ node_js:
 before_script:
 install: true
 script: 
-   - "npm i -g typescript@1.0.0"
+   - "npm i -g typescript@1.6.2"
    - "npm install grunt-cli -g"
    - "npm install"
    - "grunt travis"

@@ -97,6 +97,22 @@ describe('A finite state machine', ()=>{
       expect(fsm.currentState).toBe(ValidStates.A);
       expect(() => { fsm.go(ValidStates.C); }).toThrow('Error no transition function exists from state ' + ValidStates.A.toString() + ' to ' + ValidStates.C.toString());
    });
+   
+   it('can handle an invalid state transition', () => {
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      var fromResult: ValidStates;
+      var toResult: ValidStates;
+      fsm.onInvalidTransition((from, to) => {
+         fromResult = from;
+         toResult = to;
+         return true;
+      });
+      fsm.go(ValidStates.C);
+      expect(fromResult).toBe(ValidStates.A);
+      expect(toResult).toBe(ValidStates.C);
+      expect(fsm.currentState).toBe(ValidStates.A);
+      
+   });
 
    it('fires "on" callbacks when transitioning to a listend state', () => {
       fsm.from(ValidStates.A).to(ValidStates.B);
