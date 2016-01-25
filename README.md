@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/eonarheim/TypeState.svg?branch=master)](https://travis-ci.org/eonarheim/TypeState)
+[![npm version](https://badge.fury.io/js/typestate.svg)](https://badge.fury.io/js/typestate)
 TypeState
 ========
 
