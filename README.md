@@ -1,5 +1,8 @@
 [![Build Status](https://travis-ci.org/eonarheim/TypeState.svg?branch=master)](https://travis-ci.org/eonarheim/TypeState)
 [![npm version](https://badge.fury.io/js/typestate.svg)](https://badge.fury.io/js/typestate)
+[![NuGet version](https://badge.fury.io/nu/typestate.svg)](https://badge.fury.io/nu/typestate)
+[![Bower version](https://badge.fury.io/bo/typestate.svg)](https://badge.fury.io/bo/typestate)
+
 TypeState
 ========
 
