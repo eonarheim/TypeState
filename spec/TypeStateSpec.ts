@@ -217,6 +217,10 @@ describe('A finite state machine', ()=>{
       expect(lastTo).toBe(ValidStates.C);
 
    });
+   
+   it('can compare current state', () => {
+      expect(fsm.is(ValidStates.A)).toBe(true);
+   });
 
 
 });
