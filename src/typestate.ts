@@ -191,6 +191,13 @@ module TypeState {
       public reset(): void {
          this.currentState = this._startState;
       }
+      
+      /**
+       * Whether or not the current state equals the given state
+       */
+      public is(state: T): boolean {
+          return this.currentState === state;
+      }
 
       private _transitionTo(state: T) {
          if (!this._exitCallbacks[this.currentState.toString()]) {
