@@ -42,6 +42,11 @@ fsm.from(Elevator.DoorsClosed).to(Elevator.Moving);
 // When the elevator reaches its destination, it may stop moving
 fsm.from(Elevator.Moving).to(Elevator.DoorsClosed);
 
+// Check that the current state is the initial state
+if(fsm.is(Elevator.DoorsOpened)){
+   console.log("The doors are open Dave");  
+}
+
 
 // Test validity of transitions from the current state, in this case 'Elevator.DoorsOpened'
 fsm.canGo(Elevator.DoorsClosed); // returns true
