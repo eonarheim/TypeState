@@ -1,5 +1,7 @@
-/// <reference path="jasmine.d.ts" />
-/// <reference path="../src/typestate.ts" />
+import "./support/jasmine";
+import {typestate} from "../src/typestate";
+import {TypeState} from "../src/typestate";
+
 enum ValidStates {
       A,
       B,
@@ -7,14 +9,23 @@ enum ValidStates {
       D
 }
 describe('A finite state machine', ()=>{
-   var fsm: TypeState.FiniteStateMachine<ValidStates>;
+   var fsm: typestate.FiniteStateMachine<ValidStates>;
    beforeEach(() => {
-      fsm = new TypeState.FiniteStateMachine<ValidStates>(ValidStates.A);
+      fsm = new typestate.FiniteStateMachine<ValidStates>(ValidStates.A);
    });
 
    it('should exist', ()=>{
+      expect(typestate.FiniteStateMachine).toBeDefined();
+   });
+
+   it('should be backwards compatible', () => {
       expect(TypeState.FiniteStateMachine).toBeDefined();
    });
+
+   it('backwards compatible can be instantiated', () => {
+      var fsm2 = new TypeState.FiniteStateMachine<ValidStates>(ValidStates.A);
+      expect(fsm2).toBeTruthy();
+   })
 
    it('can be instantiated with an enum', ()=>{
       expect(fsm).toBeTruthy();
@@ -95,7 +106,7 @@ describe('A finite state machine', ()=>{
    it('throws an error when transitioning to an invalid state', () => {
       fsm.from(ValidStates.A).to(ValidStates.B);
       expect(fsm.currentState).toBe(ValidStates.A);
-      expect(() => { fsm.go(ValidStates.C); }).toThrow('Error no transition function exists from state ' + ValidStates.A.toString() + ' to ' + ValidStates.C.toString());
+      expect(() => { fsm.go(ValidStates.C); }).toThrowError('Error no transition function exists from state ' + ValidStates.A.toString() + ' to ' + ValidStates.C.toString());
    });
    
    it('can handle an invalid state transition', () => {

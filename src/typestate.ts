@@ -1,4 +1,9 @@
-module TypeState {
+
+// polyfile exports for browser usages
+
+var exports = (<any>exports) || {};
+
+export module typestate {
    /**
     * Transition grouping to faciliate fluent api
     */
@@ -232,3 +237,9 @@ module TypeState {
       }
    }
 }
+
+
+// maintain backwards compatibility for people using the pascal cased version
+export {typestate as TypeState};
+var TypeState = typestate;
+

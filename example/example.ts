@@ -1,6 +1,8 @@
 /// <reference path="../src/typestate.ts" />
 /// <reference path="knockout.d.ts" />
 
+//import {TypeState} from "../src/typestate";
+
 // Let's model the states of an elevator
 
 // Define an Enum with all possible valid states

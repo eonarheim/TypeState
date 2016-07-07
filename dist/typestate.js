@@ -1,8 +1,8 @@
-/*! typestate - v1.0.2 - 2016-03-05
-* https://github.com/eonarheim/TypeState
-* Copyright (c) 2016 Erik Onarheim; Licensed BSD-2-Clause*/
-var TypeState;
-(function (TypeState) {
+// polyfile exports for browser usages
+"use strict";
+var exports = exports || {};
+var typestate;
+(function (typestate) {
     /**
      * Transition grouping to faciliate fluent api
      */
@@ -36,8 +36,8 @@ var TypeState;
             this.fsm.addTransitions(this);
         };
         return Transitions;
-    })();
-    TypeState.Transitions = Transitions;
+    }());
+    typestate.Transitions = Transitions;
     /**
      * Internal representation of a transition function
      */
@@ -48,8 +48,8 @@ var TypeState;
             this.to = to;
         }
         return TransitionFunction;
-    })();
-    TypeState.TransitionFunction = TransitionFunction;
+    }());
+    typestate.TransitionFunction = TransitionFunction;
     /**
      * Creates a hierarchical state machine, which allows the nesting of states in a super state, usefule
      * for modeling more complicated behaviors than with just FSMs
@@ -59,8 +59,8 @@ var TypeState;
         function HierarchicalStateMachine() {
         }
         return HierarchicalStateMachine;
-    })();
-    TypeState.HierarchicalStateMachine = HierarchicalStateMachine;
+    }());
+    typestate.HierarchicalStateMachine = HierarchicalStateMachine;
     /**
      * A simple finite state machine implemented in TypeScript, the templated argument is meant to be used
      * with an enumeration.
@@ -225,7 +225,10 @@ var TypeState;
             }
         };
         return FiniteStateMachine;
-    })();
-    TypeState.FiniteStateMachine = FiniteStateMachine;
-})(TypeState || (TypeState = {}));
-//# sourceMappingURL=typestate-1.0.2.js.map
+    }());
+    typestate.FiniteStateMachine = FiniteStateMachine;
+})(typestate = exports.typestate || (exports.typestate = {}));
+exports.TypeState = typestate;
+// maintain backwards compatibility for people using the pascal cased version
+var TypeState = typestate;
+//# sourceMappingURL=typestate.js.map

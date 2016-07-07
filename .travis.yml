@@ -1,11 +1,11 @@
 language: node_js
 node_js:
-   - "0.10"
+   - "6"
 before_script:
 install: true
 sudo: false
 script: 
-   - "npm i -g typescript@1.6.2"
+   - "npm i -g typescript"
    - "npm install grunt-cli -g"
    - "npm install"
    - "grunt travis"

@@ -1,4 +1,4 @@
-declare module TypeState {
+export declare module typestate {
     /**
      * Transition grouping to faciliate fluent api
      */
@@ -97,3 +97,4 @@ declare module TypeState {
         private _transitionTo(state);
     }
 }
+export { typestate as TypeState };
