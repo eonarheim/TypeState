@@ -1,6 +1,5 @@
-/// <reference path="../src/typestate.ts" />
+/// <reference path="../dist/typestate.d.ts" />
 /// <reference path="knockout.d.ts" />
-//import {TypeState} from "../src/typestate";
 // Let's model the states of an elevator
 // Define an Enum with all possible valid states
 var Elevator;
@@ -10,7 +9,7 @@ var Elevator;
     Elevator[Elevator["Moving"] = 2] = "Moving";
 })(Elevator || (Elevator = {}));
 // Construct the FSM with the inital state, in this case the elevator starts with its doors opened
-var fsm = new TypeState.FiniteStateMachine(Elevator.DoorsOpened);
+var fsm = new typestate.FiniteStateMachine(Elevator.DoorsOpened);
 // Declare the valid state transitions to model your system
 // Doors can go from opened to closed, and vice versa
 fsm.from(Elevator.DoorsOpened).to(Elevator.DoorsClosed);

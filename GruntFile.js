@@ -36,6 +36,10 @@ module.exports = function (grunt) {
       // Add banner to files
       //
       concat: {
+         node: {
+            src: ['src/typestate.ts', 'src/typestate-node-suffix.ts'],
+            dest: 'src/typestate-node.ts'
+         },
          main: {
             src: ['dist/<%= pkg.name %>-<%= pkg.version %>.js'],
             dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
@@ -88,13 +92,21 @@ module.exports = function (grunt) {
       shell: {
 
          //
-         // Execute TypeScript compiler against Excalibur core
+         // Execute TypeScript compiler against typestate core
          //
          tsc: {
-            command: 'tsc --sourcemap --module commonjs --declaration "./src/typestate.ts" --outDir "./dist/"',               
+            command: 'tsc --sourcemap --declaration "./src/typestate.ts"',               
             options: {
                stdout: true,
-               failOnError: false
+               failOnError: true
+            }
+         },
+
+         tscnode: {
+            command: 'tsc --sourcemap --module commonjs --declaration "./src/typestate-node.ts" --outDir "./dist/"',               
+            options: {
+               stdout: true,
+               failOnError: true
             }
          },
 
@@ -102,10 +114,10 @@ module.exports = function (grunt) {
          // Execute TypeScript compiler against Excalibur core
          //
          example: {
-            command: 'tsc --sourcemap --module commonjs --declaration "./example/example.ts"',               
+            command: 'tsc --sourcemap --module system --declaration "./example/example.ts"',               
             options: {
                stdout: true,
-               failOnError: false
+               failOnError: true
             }
          },
 
@@ -127,7 +139,7 @@ module.exports = function (grunt) {
             command: 'tsc "./spec/TypeStateSpec.ts"',
             options: {
                stdout: true,
-               failOnError: false
+               failOnError: true
             }
          },
 
@@ -151,7 +163,10 @@ module.exports = function (grunt) {
             files: [
                {src: './dist/<%= pkg.name %>.js', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.js'},
                {src: './dist/<%= pkg.name %>.min.js', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.min.js'},
-               {src: './dist/<%= pkg.name %>.d.ts', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.d.ts'}
+               {src: './dist/<%= pkg.name %>.d.ts', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.d.ts'},
+               {src: './dist/<%= pkg.name %>-node.js', dest: './dist/<%= pkg.name %>-node-<%= pkg.version %>.js'},
+               {src: './dist/<%= pkg.name %>-node.min.js', dest: './dist/<%= pkg.name %>-node-<%= pkg.version %>.min.js'},
+               {src: './dist/<%= pkg.name %>-node.d.ts', dest: './dist/<%= pkg.name %>-node-<%= pkg.version %>.d.ts'}
             ]
          }
       },
@@ -180,7 +195,7 @@ module.exports = function (grunt) {
    grunt.registerTask('tests', ['shell:specs', 'shell:tests']);
 
    // Default task - compile, test, build dists
-   grunt.registerTask('default', ['tests', 'shell:tsc', 'example', 'minified', 'concat', 'copy', 'shell:nuget']);
+   grunt.registerTask('default', ['shell:tsc', 'concat:node', 'shell:tscnode', 'minified', 'concat', 'copy', 'shell:nuget', 'example', 'tests']);
 
    // Build example
 

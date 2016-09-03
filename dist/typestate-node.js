@@ -1,6 +1,7 @@
-if (typeof exports === 'undefined') {
-    var exports = {};
-}
+"use strict";
+/*! typestate - v1.0.3 - 2016-09-03
+* https://github.com/eonarheim/TypeState
+* Copyright (c) 2016 Erik Onarheim; Licensed BSD-2-Clause*/
 var typestate;
 (function (typestate) {
     /**
@@ -217,9 +218,10 @@ var typestate;
     }());
     typestate.FiniteStateMachine = FiniteStateMachine;
 })(typestate || (typestate = {}));
-// maintain backwards compatibility for people using the pascal cased version
-//export {typestate as TypeState};
-var TypeState = typestate;
 exports.typestate = typestate;
 exports.TypeState = typestate;
-//# sourceMappingURL=typestate.js.map
+// maintain backwards compatibility for people using the pascal cased version
+var TypeState = typestate;
+;
+// concat to the back of typestate.ts for node to work :/ typescript modules make me sad
+//# sourceMappingURL=typestate-node.js.map

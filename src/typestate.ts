@@ -1,9 +1,4 @@
-
-// polyfile exports for browser usages
-
-var exports = (<any>exports) || {};
-
-export module typestate {
+namespace typestate {
    /**
     * Transition grouping to faciliate fluent api
     */
@@ -45,16 +40,6 @@ export module typestate {
       constructor(public fsm: FiniteStateMachine<T>, public from: T, public to: T) { }
    }
    
-   /**
-    * Creates a hierarchical state machine, which allows the nesting of states in a super state, usefule
-    * for modeling more complicated behaviors than with just FSMs
-    * Please refer to https://en.wikipedia.org/wiki/UML_state_machine  
-    */
-   export class HierarchicalStateMachine {
-      
-      
-   }
-
    /**
     * A simple finite state machine implemented in TypeScript, the templated argument is meant to be used
     * with an enumeration.
@@ -238,8 +223,5 @@ export module typestate {
    }
 }
 
-
 // maintain backwards compatibility for people using the pascal cased version
-export {typestate as TypeState};
 var TypeState = typestate;
-

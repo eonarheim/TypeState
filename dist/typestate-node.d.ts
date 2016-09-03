@@ -90,4 +90,5 @@ declare namespace typestate {
         private _transitionTo(state);
     }
 }
-declare var TypeState: typeof typestate;
+export { typestate };
+export { typestate as TypeState };

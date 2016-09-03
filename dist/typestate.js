@@ -1,6 +1,6 @@
-// polyfile exports for browser usages
-"use strict";
-var exports = exports || {};
+if (typeof exports === 'undefined') {
+    var exports = {};
+}
 var typestate;
 (function (typestate) {
     /**
@@ -50,17 +50,6 @@ var typestate;
         return TransitionFunction;
     }());
     typestate.TransitionFunction = TransitionFunction;
-    /**
-     * Creates a hierarchical state machine, which allows the nesting of states in a super state, usefule
-     * for modeling more complicated behaviors than with just FSMs
-     * Please refer to https://en.wikipedia.org/wiki/UML_state_machine
-     */
-    var HierarchicalStateMachine = (function () {
-        function HierarchicalStateMachine() {
-        }
-        return HierarchicalStateMachine;
-    }());
-    typestate.HierarchicalStateMachine = HierarchicalStateMachine;
     /**
      * A simple finite state machine implemented in TypeScript, the templated argument is meant to be used
      * with an enumeration.
@@ -227,8 +216,10 @@ var typestate;
         return FiniteStateMachine;
     }());
     typestate.FiniteStateMachine = FiniteStateMachine;
-})(typestate = exports.typestate || (exports.typestate = {}));
-exports.TypeState = typestate;
+})(typestate || (typestate = {}));
 // maintain backwards compatibility for people using the pascal cased version
+//export {typestate as TypeState};
 var TypeState = typestate;
+exports.typestate = typestate;
+exports.TypeState = typestate;
 //# sourceMappingURL=typestate.js.map

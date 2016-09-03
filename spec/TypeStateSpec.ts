@@ -1,6 +1,6 @@
 import "./support/jasmine";
-import {typestate} from "../src/typestate";
-import {TypeState} from "../src/typestate";
+import {typestate} from "../dist/typestate-node";
+import {TypeState} from "../dist/typestate-node";
 
 enum ValidStates {
       A,
@@ -9,9 +9,9 @@ enum ValidStates {
       D
 }
 describe('A finite state machine', ()=>{
-   var fsm: typestate.FiniteStateMachine<ValidStates>;
+   var fsm: TypeState.FiniteStateMachine<ValidStates>;
    beforeEach(() => {
-      fsm = new typestate.FiniteStateMachine<ValidStates>(ValidStates.A);
+      fsm = new TypeState.FiniteStateMachine<ValidStates>(ValidStates.A);
    });
 
    it('should exist', ()=>{
