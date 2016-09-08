@@ -1,4 +1,4 @@
-declare module TypeState {
+declare namespace typestate {
     /**
      * Transition grouping to faciliate fluent api
      */
@@ -25,13 +25,6 @@ declare module TypeState {
         from: T;
         to: T;
         constructor(fsm: FiniteStateMachine<T>, from: T, to: T);
-    }
-    /**
-     * Creates a hierarchical state machine, which allows the nesting of states in a super state, usefule
-     * for modeling more complicated behaviors than with just FSMs
-     * Please refer to https://en.wikipedia.org/wiki/UML_state_machine
-     */
-    class HierarchicalStateMachine {
     }
     /**
      * A simple finite state machine implemented in TypeScript, the templated argument is meant to be used
@@ -97,3 +90,5 @@ declare module TypeState {
         private _transitionTo(state);
     }
 }
+export { typestate };
+export { typestate as TypeState };

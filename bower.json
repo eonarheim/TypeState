@@ -1,12 +1,12 @@
 {
   "name": "typestate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://github.com/eonarheim/TypeState",
   "authors": [
     "Erik Onarheim"
   ],
   "description": "A small finite state machine implementation in TypeScript.",
-  "main": "dist/typestate-1.0.2.js",
+  "main": "dist/typestate-1.0.3.js",
   "keywords": [
     "Finite",
     "State",

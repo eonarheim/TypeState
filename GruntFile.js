@@ -1,6 +1,7 @@
 /*********************************
 /* typedfsm.js Grunt Build File
 /*********************************/
+var path = require('path');
 
 /*global module:false*/
 module.exports = function (grunt) {
@@ -10,6 +11,9 @@ module.exports = function (grunt) {
    //
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
+      jasmineCmd: path.join('node_modules', '.bin', 'jasmine'),
+      jasmineConfig: path.join('spec', 'support', 'jasmine.json'),
+      jasmineJs: path.join('node_modules', 'jasmine', 'bin', 'jasmine.js'),
 
       //
       // Configure jasmine-node to run Jasmine specs
@@ -32,6 +36,10 @@ module.exports = function (grunt) {
       // Add banner to files
       //
       concat: {
+         node: {
+            src: ['src/typestate.ts', 'src/typestate-node-suffix.ts'],
+            dest: 'src/typestate-node.ts'
+         },
          main: {
             src: ['dist/<%= pkg.name %>-<%= pkg.version %>.js'],
             dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
@@ -55,8 +63,8 @@ module.exports = function (grunt) {
       //
       minified: {
          files: {
-            src: 'dist/<%= pkg.name %>-<%= pkg.version %>.js',
-            dest: 'dist/<%= pkg.name %>-<%= pkg.version %>'
+            src: 'dist/<%= pkg.name %>.js',
+            dest: 'dist/<%= pkg.name %>'
          },
          options: {
             sourcemap: false,
@@ -84,10 +92,29 @@ module.exports = function (grunt) {
       shell: {
 
          //
-         // Execute TypeScript compiler against Excalibur core
+         // Execute TypeScript compiler against typestate core
          //
          tsc: {
-            command: 'tsc --sourcemap --declaration "./src/typestate.ts" -out "./dist/<%= pkg.name %>-<%= pkg.version %>.js"',               
+            command: 'tsc --sourcemap --declaration "./src/typestate.ts"',               
+            options: {
+               stdout: true,
+               failOnError: true
+            }
+         },
+
+         tscnode: {
+            command: 'tsc --sourcemap --module commonjs --declaration "./src/typestate-node.ts" --outDir "./dist/"',               
+            options: {
+               stdout: true,
+               failOnError: true
+            }
+         },
+
+         //
+         // Execute TypeScript compiler against Excalibur core
+         //
+         example: {
+            command: 'tsc --sourcemap --module system --declaration "./example/example.ts"',               
             options: {
                stdout: true,
                failOnError: true
@@ -109,23 +136,37 @@ module.exports = function (grunt) {
          // TODO: Simplify this so we don't have to always update it every time we add a spec
          //
          specs: {
-            command: 'tsc "./spec/TypeStateSpec.ts" -out "./spec/TypeStateSpec.js"',
+            command: 'tsc "./spec/TypeStateSpec.ts"',
             options: {
                stdout: true,
                failOnError: true
             }
+         },
+
+         //
+         // Jasmine NPM command
+         //
+         tests: {
+             command: '<%= jasmineCmd %> JASMINE_CONFIG_PATH=<%= jasmineConfig %>',
+             options: {
+                 stdout: true,
+                 failOnError: true
+             }
          }
       },
 
       //
-      // Copy Files for sample game
+      // Copy Files for dist
       //
       copy: {
          main: {
             files: [
-               {src: './dist/<%= pkg.name %>-<%= pkg.version %>.js', dest: './dist/<%= pkg.name %>.js'},
-               {src: './dist/<%= pkg.name %>-<%= pkg.version %>.min.js', dest: './dist/<%= pkg.name %>.min.js'},
-               {src: './dist/<%= pkg.name %>-<%= pkg.version %>.d.ts', dest: './dist/<%= pkg.name %>.d.ts'}
+               {src: './dist/<%= pkg.name %>.js', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.js'},
+               {src: './dist/<%= pkg.name %>.min.js', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.min.js'},
+               {src: './dist/<%= pkg.name %>.d.ts', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.d.ts'},
+               {src: './dist/<%= pkg.name %>-node.js', dest: './dist/<%= pkg.name %>-node-<%= pkg.version %>.js'},
+               {src: './dist/<%= pkg.name %>-node.min.js', dest: './dist/<%= pkg.name %>-node-<%= pkg.version %>.min.js'},
+               {src: './dist/<%= pkg.name %>-node.d.ts', dest: './dist/<%= pkg.name %>-node-<%= pkg.version %>.d.ts'}
             ]
          }
       },
@@ -151,10 +192,14 @@ module.exports = function (grunt) {
    //
 
    // Run tests
-   grunt.registerTask('tests', ['shell:specs', 'jasmine_node']);
+   grunt.registerTask('tests', ['shell:specs', 'shell:tests']);
 
    // Default task - compile, test, build dists
-   grunt.registerTask('default', ['tests', 'shell:tsc', 'minified', 'concat', 'copy', 'shell:nuget']);
+   grunt.registerTask('default', ['shell:tsc', 'concat:node', 'shell:tscnode', 'minified', 'concat', 'copy', 'shell:nuget', 'example', 'tests']);
+
+   // Build example
+
+   grunt.registerTask('example', ['shell:example'])
 
    // Travis task - for Travis CI
    grunt.registerTask('travis', 'default');
