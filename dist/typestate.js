@@ -1,6 +1,3 @@
-if (typeof exports === 'undefined') {
-    var exports = {};
-}
 var typestate;
 (function (typestate) {
     /**
@@ -218,8 +215,5 @@ var typestate;
     typestate.FiniteStateMachine = FiniteStateMachine;
 })(typestate || (typestate = {}));
 // maintain backwards compatibility for people using the pascal cased version
-//export {typestate as TypeState};
 var TypeState = typestate;
-exports.typestate = typestate;
-exports.TypeState = typestate;
 //# sourceMappingURL=typestate.js.map

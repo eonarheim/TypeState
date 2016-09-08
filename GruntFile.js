@@ -161,6 +161,8 @@ module.exports = function (grunt) {
       copy: {
          main: {
             files: [
+               {src: './src/<%= pkg.name %>.js', dest: './dist/<%= pkg.name %>.js'},
+               {src: './src/<%= pkg.name %>.d.ts', dest: './dist/<%= pkg.name %>.d.ts'},
                {src: './dist/<%= pkg.name %>.js', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.js'},
                {src: './dist/<%= pkg.name %>.min.js', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.min.js'},
                {src: './dist/<%= pkg.name %>.d.ts', dest: './dist/<%= pkg.name %>-<%= pkg.version %>.d.ts'},
@@ -195,7 +197,7 @@ module.exports = function (grunt) {
    grunt.registerTask('tests', ['shell:specs', 'shell:tests']);
 
    // Default task - compile, test, build dists
-   grunt.registerTask('default', ['shell:tsc', 'concat:node', 'shell:tscnode', 'minified', 'concat', 'copy', 'shell:nuget', 'example', 'tests']);
+   grunt.registerTask('default', ['shell:tsc', 'concat:node', 'shell:tscnode', 'concat', 'copy', 'shell:nuget', 'example', 'tests']);
 
    // Build example
 
