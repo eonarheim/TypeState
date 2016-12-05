@@ -43,12 +43,12 @@ declare namespace typestate {
         /**
          * Listen for the transition to this state and fire the associated callback
          */
-        on(state: T, callback: (from?: T) => any): FiniteStateMachine<T>;
+        on(state: T, callback: (from?: T, event?: any) => any): FiniteStateMachine<T>;
         /**
          * Listen for the transition to this state and fire the associated callback, returning
          * false in the callback will block the transition to this state.
          */
-        onEnter(state: T, callback: (from?: T) => boolean): FiniteStateMachine<T>;
+        onEnter(state: T, callback: (from?: T, event?: any) => boolean): FiniteStateMachine<T>;
         /**
          * Listen for the transition to this state and fire the associated callback, returning
          * false in the callback will block the transition from this state.
@@ -72,7 +72,7 @@ declare namespace typestate {
         /**
          * Transition to another valid state
          */
-        go(state: T): void;
+        go(state: T, event?: any): void;
         /**
          * This method is availble for overridding for the sake of extensibility.
          * It is called in the event of a successful transition.
@@ -87,7 +87,7 @@ declare namespace typestate {
          * Whether or not the current state equals the given state
          */
         is(state: T): boolean;
-        private _transitionTo(state);
+        private _transitionTo(state, event?);
     }
 }
 declare var TypeState: typeof typestate;

@@ -1,5 +1,5 @@
 "use strict";
-/*! typestate - v1.0.4 - 2016-09-07
+/*! typestate - v1.0.4 - 2016-12-05
 * https://github.com/eonarheim/TypeState
 * Copyright (c) 2016 Erik Onarheim; Licensed BSD-2-Clause*/
 var typestate;
@@ -158,14 +158,14 @@ var typestate;
         /**
          * Transition to another valid state
          */
-        FiniteStateMachine.prototype.go = function (state) {
+        FiniteStateMachine.prototype.go = function (state, event) {
             if (!this.canGo(state)) {
                 if (!this._invalidTransitionCallback || !this._invalidTransitionCallback(this.currentState, state)) {
                     throw new Error('Error no transition function exists from state ' + this.currentState.toString() + ' to ' + state.toString());
                 }
             }
             else {
-                this._transitionTo(state);
+                this._transitionTo(state, event);
             }
         };
         /**
@@ -188,7 +188,7 @@ var typestate;
         FiniteStateMachine.prototype.is = function (state) {
             return this.currentState === state;
         };
-        FiniteStateMachine.prototype._transitionTo = function (state) {
+        FiniteStateMachine.prototype._transitionTo = function (state, event) {
             var _this = this;
             if (!this._exitCallbacks[this.currentState.toString()]) {
                 this._exitCallbacks[this.currentState.toString()] = [];
@@ -203,13 +203,13 @@ var typestate;
                 return accum && next.call(_this, state);
             }, true);
             var canEnter = this._enterCallbacks[state.toString()].reduce(function (accum, next) {
-                return accum && next.call(_this, _this.currentState);
+                return accum && next.call(_this, _this.currentState, event);
             }, true);
             if (canExit && canEnter) {
                 var old = this.currentState;
                 this.currentState = state;
                 this._onCallbacks[this.currentState.toString()].forEach(function (fcn) {
-                    fcn.call(_this, old);
+                    fcn.call(_this, old, event);
                 });
                 this.onTransition(old, state);
             }
