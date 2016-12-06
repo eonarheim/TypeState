@@ -1,5 +1,5 @@
 "use strict";
-/*! typestate - v1.0.4 - 2016-12-05
+/*! typestate - v1.0.4 - 2016-12-06
 * https://github.com/eonarheim/TypeState
 * Copyright (c) 2016 Erik Onarheim; Licensed BSD-2-Clause*/
 var typestate;
