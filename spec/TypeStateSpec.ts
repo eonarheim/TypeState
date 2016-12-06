@@ -249,5 +249,18 @@ describe('A finite state machine', ()=>{
       expect(fsm.is(ValidStates.A)).toBe(true);
    });
 
+   it('can pass event data on transition', () => {
+      fsm.from(ValidStates.A).to(ValidStates.B);
 
+      let eventData = 'test';
+      let receivedData: any;
+
+      fsm.on(ValidStates.B, (from: ValidStates, data?: any) => {
+         receivedData = data;
+      });
+
+      fsm.go(ValidStates.B, eventData);
+      expect(fsm.currentState).toBe(ValidStates.B);
+      expect(receivedData).toBe(eventData);
+   });
 });
