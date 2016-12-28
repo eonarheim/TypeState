@@ -263,4 +263,15 @@ describe('A finite state machine', ()=>{
       expect(fsm.currentState).toBe(ValidStates.B);
       expect(receivedData).toBe(eventData);
    });
+
+   it('doesn\'t allow states to transition into themselves by default', () => {
+       expect(fsm.canGo(ValidStates.A)).toBe(false);
+   });
+
+   it('can allow states to transition into themselves by default', () => {
+       var fsm2 = new TypeState.FiniteStateMachine<ValidStates>(ValidStates.A, true);
+       expect(fsm2.canGo(ValidStates.A)).toBe(true);
+   });
+
+
 });

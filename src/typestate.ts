@@ -47,22 +47,24 @@ namespace typestate {
    export class FiniteStateMachine<T> {
       public currentState: T;
       private _startState: T;
+      private _allowImplicitSelfTransition: boolean;
       private _transitionFunctions: TransitionFunction<T>[] = [];
       private _onCallbacks: { [key: string]: { (from: T, event?: any): void; }[] } = {};
       private _exitCallbacks: { [key: string]: { (to: T): boolean; }[] } = {};
       private _enterCallbacks: { [key: string]: { (from: T, event?: any): boolean; }[] } = {};
       private _invalidTransitionCallback: (to?: T, from?: T) => boolean = null;
 
-      constructor(startState: T) {
+      constructor(startState: T, allowImplicitSelfTransition: boolean = false) {
          this.currentState = startState;
          this._startState = startState;
+         this._allowImplicitSelfTransition = allowImplicitSelfTransition;
       }
 
       public addTransitions(fcn: Transitions<T>) {
          fcn.fromStates.forEach(from => {
             fcn.toStates.forEach(to => {
-               // self transitions are invalid and don't add duplicates
-               if (from !== to && !this._validTransition(from, to)) {
+                // Only add the transition if the state machine is not currently able to transition.
+                if (!this._canGo(from, to)) {
                   this._transitionFunctions.push(new TransitionFunction<T>(this, from, to));
                }
             });
@@ -147,10 +149,19 @@ namespace typestate {
       }
 
       /**
+       * Check whether a transition between any two states is valid.
+       *    If allowImplicitSelfTransition is true, always allow transitions from a state back to itself.
+       *     Otherwise, check if it's a valid transition.
+       */
+      private _canGo(fromState: T, toState: T): boolean {
+          return (this._allowImplicitSelfTransition && fromState === toState) || this._validTransition(fromState, toState);
+      } 
+
+      /**
        * Check whether a transition to a new state is valid
        */
       public canGo(state: T): boolean {
-         return this.currentState === state || this._validTransition(this.currentState, state);
+          return this._canGo(this.currentState, state);
       }
 
       /**
