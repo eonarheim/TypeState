@@ -13,7 +13,7 @@ var typestate;
         Transitions.prototype.to = function () {
             var states = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                states[_i - 0] = arguments[_i];
+                states[_i] = arguments[_i];
             }
             this.toStates = states;
             this.fsm.addTransitions(this);
@@ -52,7 +52,8 @@ var typestate;
      * with an enumeration.
      */
     var FiniteStateMachine = (function () {
-        function FiniteStateMachine(startState) {
+        function FiniteStateMachine(startState, allowImplicitSelfTransition) {
+            if (allowImplicitSelfTransition === void 0) { allowImplicitSelfTransition = false; }
             this._transitionFunctions = [];
             this._onCallbacks = {};
             this._exitCallbacks = {};
@@ -60,13 +61,14 @@ var typestate;
             this._invalidTransitionCallback = null;
             this.currentState = startState;
             this._startState = startState;
+            this._allowImplicitSelfTransition = allowImplicitSelfTransition;
         }
         FiniteStateMachine.prototype.addTransitions = function (fcn) {
             var _this = this;
             fcn.fromStates.forEach(function (from) {
                 fcn.toStates.forEach(function (to) {
-                    // self transitions are invalid and don't add duplicates
-                    if (from !== to && !_this._validTransition(from, to)) {
+                    // Only add the transition if the state machine is not currently able to transition.
+                    if (!_this._canGo(from, to)) {
                         _this._transitionFunctions.push(new TransitionFunction(_this, from, to));
                     }
                 });
@@ -123,7 +125,7 @@ var typestate;
         FiniteStateMachine.prototype.from = function () {
             var states = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                states[_i - 0] = arguments[_i];
+                states[_i] = arguments[_i];
             }
             var _transition = new Transitions(this);
             _transition.fromStates = states;
@@ -146,10 +148,18 @@ var typestate;
             });
         };
         /**
+         * Check whether a transition between any two states is valid.
+         *    If allowImplicitSelfTransition is true, always allow transitions from a state back to itself.
+         *     Otherwise, check if it's a valid transition.
+         */
+        FiniteStateMachine.prototype._canGo = function (fromState, toState) {
+            return (this._allowImplicitSelfTransition && fromState === toState) || this._validTransition(fromState, toState);
+        };
+        /**
          * Check whether a transition to a new state is valid
          */
         FiniteStateMachine.prototype.canGo = function (state) {
-            return this.currentState === state || this._validTransition(this.currentState, state);
+            return this._canGo(this.currentState, state);
         };
         /**
          * Transition to another valid state

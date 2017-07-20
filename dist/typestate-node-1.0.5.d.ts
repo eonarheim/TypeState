@@ -33,12 +33,13 @@ declare namespace typestate {
     class FiniteStateMachine<T> {
         currentState: T;
         private _startState;
+        private _allowImplicitSelfTransition;
         private _transitionFunctions;
         private _onCallbacks;
         private _exitCallbacks;
         private _enterCallbacks;
         private _invalidTransitionCallback;
-        constructor(startState: T);
+        constructor(startState: T, allowImplicitSelfTransition?: boolean);
         addTransitions(fcn: Transitions<T>): void;
         /**
          * Listen for the transition to this state and fire the associated callback
@@ -66,6 +67,12 @@ declare namespace typestate {
         fromAny(states: any): Transitions<T>;
         private _validTransition(from, to);
         /**
+         * Check whether a transition between any two states is valid.
+         *    If allowImplicitSelfTransition is true, always allow transitions from a state back to itself.
+         *     Otherwise, check if it's a valid transition.
+         */
+        private _canGo(fromState, toState);
+        /**
          * Check whether a transition to a new state is valid
          */
         canGo(state: T): boolean;
@@ -90,4 +97,5 @@ declare namespace typestate {
         private _transitionTo(state, event?);
     }
 }
-declare var TypeState: typeof typestate;
+export { typestate };
+export { typestate as TypeState };

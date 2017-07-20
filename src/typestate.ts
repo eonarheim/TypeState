@@ -214,11 +214,11 @@ namespace typestate {
          }
 
 
-         var canExit = this._exitCallbacks[this.currentState.toString()].reduce<boolean>((accum: boolean, next: () => boolean) => {
+         var canExit = this._exitCallbacks[this.currentState.toString()].reduce<boolean>((accum: boolean, next: (to: T) => boolean) => {
             return accum && (<boolean>next.call(this, state));
          }, true);
 
-         var canEnter = this._enterCallbacks[state.toString()].reduce<boolean>((accum: boolean, next: () => boolean) => {
+         var canEnter = this._enterCallbacks[state.toString()].reduce<boolean>((accum: boolean, next: (from: T) => boolean) => {
             return accum && (<boolean>next.call(this, this.currentState, event));
          }, true);
 
