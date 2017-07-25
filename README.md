@@ -8,7 +8,7 @@ TypeState
 
 TypeState is a strongly typed finite state machine for TypeScript or JavaScript. Finite state machines are useful for modeling complicated flows and keeping track of state.
 
-Installation methods:
+## Installation
 
 `Install-Package TypeState`
 
@@ -16,7 +16,8 @@ Installation methods:
 
 `bower install typestate`
 
-###Basic Example:
+## Basic Example
+
 ```javascript
 // Let's model the states of an elevator
 
@@ -61,7 +62,8 @@ fsm.canGo(Elevator.DoorsOpened); //returns true
 
 ```
 
-###Using JavaScript
+## Using JavaScript
+
 JavaScript is easy with TypeState. The finite state machine relies on states that can be converted to strings with the `.toString()` method. So to use JavaScript simple replace the top few lines of the previous example with the following:
 
 ```javascript
@@ -76,7 +78,8 @@ var fsm = new FiniteStateMachine(Elevator.DoorsOpened)
 ```
 
 
-###Listening for state changes
+## Listening for state changes
+
 TypeState allows you to listen to state changes. For example if the elevator starts moving, we would like to play some elevator music. Additionally we would like to stop the music when the elevator stops.
 
 ```javascript
@@ -91,7 +94,7 @@ fsm.on(Elevator.DoorsClosed, (from: Elevator)=>{
 
 ```
 
-###Interrupting Transitions
+## Interrupting Transitions
 
 Sometimes you need to interrupt transitions. You may interrupt transitions to a state with `onEnter(STATE, CALLBACK)` and interrupt transitions from a state with the `onExit(STATE, CALLBACK)`. If the `CALLBACK` returns false the transition is canceled and the state will not change.
 
@@ -116,7 +119,7 @@ console.log("DoorsOpened", fsm.currentState === Elevator.DoorsOpened); //true
 
 ```
 
-###Wildcard Transitions
+## Wildcard Transitions
 
 If all transitions to or from a certain state are valid, there are a convience wildcard methods `fromAny(STATE_ENUM)` and `toAny(STATE_ENUM)` for such cases.
 
@@ -133,7 +136,4 @@ var newFsm = new TypeState.FiniteStateMachine<ValidStates>(ValidStates.A);
 newFsm.from(ValidStates.A).toAny(ValidStates);
 newFsm.fromAny(ValidStates).to(ValidStates.B);
 
-
 ```
-
-
