@@ -3,10 +3,6 @@
 // Let's model the states of an elevator
 // Define an Enum with all possible valid states
 var Elevator;
-/// <reference path="../dist/typestate.d.ts" />
-/// <reference path="knockout.d.ts" />
-// Let's model the states of an elevator
-// Define an Enum with all possible valid states
 (function (Elevator) {
     Elevator[Elevator["DoorsOpened"] = 0] = "DoorsOpened";
     Elevator[Elevator["DoorsClosed"] = 1] = "DoorsClosed";

@@ -13,7 +13,7 @@ var typestate;
         Transitions.prototype.to = function () {
             var states = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                states[_i] = arguments[_i];
+                states[_i - 0] = arguments[_i];
             }
             this.toStates = states;
             this.fsm.addTransitions(this);
@@ -125,7 +125,7 @@ var typestate;
         FiniteStateMachine.prototype.from = function () {
             var states = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                states[_i] = arguments[_i];
+                states[_i - 0] = arguments[_i];
             }
             var _transition = new Transitions(this);
             _transition.fromStates = states;

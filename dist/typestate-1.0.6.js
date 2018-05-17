@@ -1,8 +1,3 @@
-"use strict";
-exports.__esModule = true;
-/*! typestate - v1.0.5 - 2017-07-19
-* https://github.com/eonarheim/TypeState
-* Copyright (c) 2017 Erik Onarheim; Licensed BSD-2-Clause*/
 var typestate;
 (function (typestate) {
     /**
@@ -18,7 +13,7 @@ var typestate;
         Transitions.prototype.to = function () {
             var states = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                states[_i] = arguments[_i];
+                states[_i - 0] = arguments[_i];
             }
             this.toStates = states;
             this.fsm.addTransitions(this);
@@ -130,7 +125,7 @@ var typestate;
         FiniteStateMachine.prototype.from = function () {
             var states = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                states[_i] = arguments[_i];
+                states[_i - 0] = arguments[_i];
             }
             var _transition = new Transitions(this);
             _transition.fromStates = states;
@@ -229,9 +224,6 @@ var typestate;
     }());
     typestate.FiniteStateMachine = FiniteStateMachine;
 })(typestate || (typestate = {}));
-exports.typestate = typestate;
-exports.TypeState = typestate;
 // maintain backwards compatibility for people using the pascal cased version
 var TypeState = typestate;
-;
-//# sourceMappingURL=typestate-node.js.map
+//# sourceMappingURL=typestate.js.map

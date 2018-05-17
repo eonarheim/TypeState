@@ -1,12 +1,15 @@
 {
   "name": "typestate",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A small finite state machine implementation in TypeScript.",
   "main": "dist/typestate-node.js",
   "typings": "dist/typestate-node.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/eonarheim/TypeState.git"
+  },
+  "scripts": {
+    "all": "grunt"
   },
   "keywords": [
     "Finite",
@@ -20,7 +23,7 @@
     "url": "https://github.com/eonarheim/TypeState/issues"
   },
   "homepage": "https://github.com/eonarheim/TypeState",
-  "devDependencies": {    
+  "devDependencies": {
     "jasmine": "^2.4.1",
     "typescript": "^1.8.10",
     "grunt": "0.4.2",
@@ -28,6 +31,6 @@
     "grunt-minified": "0.0.6",
     "grunt-contrib-concat": "0.1.2",
     "grunt-contrib-copy": "0.5.0",
-    "grunt-contrib-watch":"0.6.1"
+    "grunt-contrib-watch": "0.6.1"
   }
 }
