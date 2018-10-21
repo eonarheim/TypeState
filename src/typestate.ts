@@ -190,7 +190,13 @@ namespace typestate {
       * This is for starting the fsm from the beginning.
       */
       public reset(options?: ResetOptions) {
+         options = { ...DefaultResetOptions, ...(options || {}) };
          this.currentState = this._startState;
+         if (options.runCallbacks) {
+            this._onCallbacks[this.currentState.toString()].forEach(fcn => {
+               fcn.call(this, null, null);
+            });
+         }
       }
       
       /**
