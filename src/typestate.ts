@@ -189,7 +189,7 @@ namespace typestate {
       * Reset the finite state machine back to the start state, DO NOT USE THIS AS A SHORTCUT for a transition. 
       * This is for starting the fsm from the beginning.
       */
-      public reset(): void {
+      public reset(options?: ResetOptions) {
          this.currentState = this._startState;
       }
       
@@ -232,6 +232,22 @@ namespace typestate {
          }
       }
    }
+
+   /**
+    * Options to pass to the `reset()` method.
+    */
+   export interface ResetOptions {
+      /** Whether or not the speciefied `on()` handlers for the start state should be called when resetted. */
+      runCallbacks?: boolean;
+   };
+
+   /**
+    * Default `ResetOptions` values used in the `reset()` mehtod.
+    */
+   export const DefaultResetOptions: ResetOptions = {
+      runCallbacks: false
+   };
+
 }
 
 // maintain backwards compatibility for people using the pascal cased version
