@@ -224,6 +224,24 @@ describe('A finite state machine', ()=>{
       expect(fsm.currentState).toBe(ValidStates.A);
    });
 
+   it('can be reset with optional options', () => {
+      let onCallbackRan = false;
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.on(ValidStates.A, () => {
+         onCallbackRan = true;
+      })
+      fsm.go(ValidStates.B);
+      expect(fsm.currentState).toBe(ValidStates.B);
+      fsm.reset();
+      expect(fsm.currentState).toBe(ValidStates.A);
+      expect(onCallbackRan).toBe(false);
+      fsm.go(ValidStates.B);
+      expect(fsm.currentState).toBe(ValidStates.B);
+      fsm.reset({runCallbacks: true});
+      expect(fsm.currentState).toBe(ValidStates.A);
+      expect(onCallbackRan).toBe(true);
+   });
+
    it('can have the onTransition method overridden', () => {
       fsm.from(ValidStates.A).to(ValidStates.B);
       fsm.from(ValidStates.B).to(ValidStates.C);
