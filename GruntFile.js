@@ -127,7 +127,8 @@ module.exports = function (grunt) {
          nuget: {
             command: 'tools\\nuget pack TypeState.nuspec -version <%= pkg.version %> -OutputDirectory ./dist',
             options: {
-               stdout: true
+               stdout: true,
+               failOnError: false
             }
          },         
 
