@@ -95,7 +95,7 @@ module.exports = function (grunt) {
          // Execute TypeScript compiler against typestate core
          //
          tsc: {
-            command: 'node_modules/.bin/tsc --sourcemap --declaration "./src/typestate.ts"',               
+            command: 'tsc --sourcemap --declaration "./src/typestate.ts"',               
             options: {
                stdout: true,
                failOnError: true
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
          },
 
          tscnode: {
-            command: 'node_modules/.bin/tsc --sourcemap --module commonjs --declaration "./src/typestate-node.ts" --outDir "./dist/"',               
+            command: 'tsc --sourcemap --module commonjs --declaration "./src/typestate-node.ts" --outDir "./dist/"',               
             options: {
                stdout: true,
                failOnError: true
@@ -114,7 +114,7 @@ module.exports = function (grunt) {
          // Execute TypeScript compiler against Excalibur core
          //
          example: {
-            command: 'node_modules/.bin/tsc --sourcemap --module system --declaration "./example/example.ts"',               
+            command: 'tsc --sourcemap --module system --declaration "./example/example.ts"',               
             options: {
                stdout: true,
                failOnError: true
@@ -127,7 +127,8 @@ module.exports = function (grunt) {
          nuget: {
             command: 'tools\\nuget pack TypeState.nuspec -version <%= pkg.version %> -OutputDirectory ./dist',
             options: {
-               stdout: true
+               stdout: true,
+               failOnError: false
             }
          },         
 
@@ -136,7 +137,7 @@ module.exports = function (grunt) {
          // TODO: Simplify this so we don't have to always update it every time we add a spec
          //
          specs: {
-            command: 'node_modules/.bin/tsc "./spec/TypeStateSpec.ts"',
+            command: 'tsc "./spec/TypeStateSpec.ts"',
             options: {
                stdout: true,
                failOnError: true
