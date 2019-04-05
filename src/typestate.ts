@@ -168,13 +168,13 @@ namespace typestate {
       /**
        * Transition to another valid state
        */
-      public go(state: T, event?: any): void {
+      public go(state: T, event?: any): Promise<void> {
          if (!this.canGo(state)) {
             if(!this._invalidTransitionCallback || !this._invalidTransitionCallback(this.currentState, state)){
                throw new Error('Error no transition function exists from state ' + this.currentState.toString() + ' to ' + state.toString());
             }
          } else {
-            this._transitionTo(state, event);
+            return this._transitionTo(state, event);
          }
       }
 
@@ -207,7 +207,7 @@ namespace typestate {
           return this.currentState === state;
       }
 
-      private _transitionTo(state: T, event?: any) {
+      private async _transitionTo(state: T, event?: any): Promise<void> {
          if (!this._exitCallbacks[this.currentState.toString()]) {
             this._exitCallbacks[this.currentState.toString()] = [];
          }
@@ -219,12 +219,10 @@ namespace typestate {
          if (!this._onCallbacks[state.toString()]) {
             this._onCallbacks[state.toString()] = [];
          }
-         this._exitCallbacks[this.currentState.toString()].reduce(async(acc, next) => {
-            return acc;
-         }, Promise.resolve(true))
 
-         var canExit = this._exitCallbacks[this.currentState.toString()].reduce<Promise<boolean>>(async (accum: Promise<boolean>, next: (to: T) => boolean|Promise<boolean>) => {
-            let returnValue: boolean|Promise<boolean> = next.call(this, state);
+         var canExit = true;
+         for(var exitCallback of this._exitCallbacks[this.currentState.toString()]) {
+            let returnValue: boolean|Promise<boolean> = exitCallback.call(this, state);
             // No return value
             if(returnValue === undefined) {
                // Default to true
@@ -239,11 +237,12 @@ namespace typestate {
                // Default to true
                returnValue = true;
             }
-            return accum && returnValue;
-         }, Promise.resolve(true));
+            canExit = canExit && returnValue;
+         }
 
-         var canEnter = this._enterCallbacks[state.toString()].reduce<Promise<boolean>>(async (accum: Promise<boolean>, next: (from: T, event?: any) => boolean|Promise<boolean>) => {
-            let returnValue: boolean|Promise<boolean> = next.call(this, state);
+         var canEnter = true;
+         for(var enterCallback of this._enterCallbacks[state.toString()]) {
+            let returnValue: boolean|Promise<boolean> = enterCallback.call(this, this.currentState, event);
             // No return value
             if(returnValue === undefined) {
                // Default to true
@@ -258,8 +257,8 @@ namespace typestate {
                // Default to true
                returnValue = true;
             }
-            return accum && returnValue;
-         }, Promise.resolve(true));
+            canEnter = canEnter && returnValue;
+         };
 
          if (canExit && canEnter) {
             var old = this.currentState;
