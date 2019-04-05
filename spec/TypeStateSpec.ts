@@ -291,5 +291,37 @@ describe('A finite state machine', ()=>{
        expect(fsm2.canGo(ValidStates.A)).toBe(true);
    });
 
+   it('doesn\'t block transitions when the onEnter event returns undefined', () => {
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.onEnter(ValidStates.B, () => { return undefined; });
+      fsm.go(ValidStates.B);
+      expect(fsm.is(ValidStates.B)).toBe(true);
+   });
 
+   it('doesn\'t block transitions when the onExit event returns undefined', () => {
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.onExit(ValidStates.A, () => { return undefined; });
+      fsm.go(ValidStates.B);
+      expect(fsm.is(ValidStates.B)).toBe(true);
+   });
+
+   it('can await asynchronous onEnter callbacks ', async () => {
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.onEnter(ValidStates.B, () => { return new Promise(resolve => setTimeout(resolve, 20)); });
+      expect(fsm.is(ValidStates.A)).toBe(true);
+      var result = fsm.go(ValidStates.B);
+      expect(fsm.is(ValidStates.A)).toBe(true);
+      await result;
+      expect(fsm.is(ValidStates.B)).toBe(true);
+   });
+
+   it('can await asynchronous onExit callbacks ', async () => {
+      fsm.from(ValidStates.A).to(ValidStates.B);
+      fsm.onExit(ValidStates.A, () => { return new Promise(resolve => setTimeout(resolve, 20)); });
+      expect(fsm.is(ValidStates.A)).toBe(true);
+      var result = fsm.go(ValidStates.B);
+      expect(fsm.is(ValidStates.A)).toBe(true);
+      await result;
+      expect(fsm.is(ValidStates.B)).toBe(true);
+   });
 });
