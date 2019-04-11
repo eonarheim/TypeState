@@ -45,13 +45,14 @@ namespace typestate {
     * with an enumeration.
     */
    export class FiniteStateMachine<T> {
+      
       public currentState: T;
       private _startState: T;
       private _allowImplicitSelfTransition: boolean;
       private _transitionFunctions: TransitionFunction<T>[] = [];
       private _onCallbacks: { [key: string]: { (from: T, event?: any): void; }[] } = {};
-      private _exitCallbacks: { [key: string]: { (to: T): boolean; }[] } = {};
-      private _enterCallbacks: { [key: string]: { (from: T, event?: any): boolean; }[] } = {};
+      private _exitCallbacks: { [key: string]: { (to: T): boolean|Promise<boolean>; }[] } = {};
+      private _enterCallbacks: { [key: string]: { (from: T, event?: any): boolean|Promise<boolean>; }[] } = {};
       private _invalidTransitionCallback: (to?: T, from?: T) => boolean = null;
 
       constructor(startState: T, allowImplicitSelfTransition: boolean = false) {
@@ -87,7 +88,7 @@ namespace typestate {
        * Listen for the transition to this state and fire the associated callback, returning
        * false in the callback will block the transition to this state.
        */
-      public onEnter(state: T, callback: (from?: T, event?: any) => boolean): FiniteStateMachine<T> {
+      public onEnter(state: T, callback: (from?: T, event?: any) => boolean|Promise<boolean>): FiniteStateMachine<T> {
          var key = state.toString();
          if (!this._enterCallbacks[key]) {
             this._enterCallbacks[key] = [];
@@ -100,7 +101,7 @@ namespace typestate {
        * Listen for the transition to this state and fire the associated callback, returning
        * false in the callback will block the transition from this state.
        */
-      public onExit(state: T, callback: (to?: T) => boolean): FiniteStateMachine<T> {
+      public onExit(state: T, callback: (to?: T) => boolean|Promise<boolean>): FiniteStateMachine<T> {
          var key = state.toString();
          if (!this._exitCallbacks[key]) {
             this._exitCallbacks[key] = [];
@@ -167,13 +168,13 @@ namespace typestate {
       /**
        * Transition to another valid state
        */
-      public go(state: T, event?: any): void {
+      public go(state: T, event?: any): Promise<void> {
          if (!this.canGo(state)) {
             if(!this._invalidTransitionCallback || !this._invalidTransitionCallback(this.currentState, state)){
                throw new Error('Error no transition function exists from state ' + this.currentState.toString() + ' to ' + state.toString());
             }
          } else {
-            this._transitionTo(state, event);
+            return this._transitionTo(state, event);
          }
       }
 
@@ -206,7 +207,7 @@ namespace typestate {
           return this.currentState === state;
       }
 
-      private _transitionTo(state: T, event?: any) {
+      private async _transitionTo(state: T, event?: any): Promise<void> {
          if (!this._exitCallbacks[this.currentState.toString()]) {
             this._exitCallbacks[this.currentState.toString()] = [];
          }
@@ -219,14 +220,45 @@ namespace typestate {
             this._onCallbacks[state.toString()] = [];
          }
 
+         var canExit = true;
+         for(var exitCallback of this._exitCallbacks[this.currentState.toString()]) {
+            let returnValue: boolean|Promise<boolean> = exitCallback.call(this, state);
+            // No return value
+            if(returnValue === undefined) {
+               // Default to true
+               returnValue = true;
+            }
+            // If it's not a boolean, it's a promise
+            if(returnValue !== false && returnValue !== true) {
+               returnValue = await returnValue;
+            }
+            // Still no return value
+            if(returnValue === undefined) {
+               // Default to true
+               returnValue = true;
+            }
+            canExit = canExit && returnValue;
+         }
 
-         var canExit = this._exitCallbacks[this.currentState.toString()].reduce<boolean>((accum: boolean, next: (to: T) => boolean) => {
-            return accum && (<boolean>next.call(this, state));
-         }, true);
-
-         var canEnter = this._enterCallbacks[state.toString()].reduce<boolean>((accum: boolean, next: (from: T) => boolean) => {
-            return accum && (<boolean>next.call(this, this.currentState, event));
-         }, true);
+         var canEnter = true;
+         for(var enterCallback of this._enterCallbacks[state.toString()]) {
+            let returnValue: boolean|Promise<boolean> = enterCallback.call(this, this.currentState, event);
+            // No return value
+            if(returnValue === undefined) {
+               // Default to true
+               returnValue = true;
+            }
+            // If it's not a boolean, it's a promise
+            if(returnValue !== false && returnValue !== true) {
+               returnValue = await returnValue;
+            }
+            // Still no return value
+            if(returnValue === undefined) {
+               // Default to true
+               returnValue = true;
+            }
+            canEnter = canEnter && returnValue;
+         };
 
          if (canExit && canEnter) {
             var old = this.currentState;
