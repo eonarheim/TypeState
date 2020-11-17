@@ -53,7 +53,7 @@ namespace typestate {
       private _onCallbacks: { [key: string]: { (from: T, event?: any): void; }[] } = {};
       private _exitCallbacks: { [key: string]: { (to: T): boolean|Promise<boolean>; }[] } = {};
       private _enterCallbacks: { [key: string]: { (from: T, event?: any): boolean|Promise<boolean>; }[] } = {};
-      private _invalidTransitionCallback: (to?: T, from?: T) => boolean = null;
+      private _invalidTransitionCallback: (to: T, from: T) => boolean = null;
 
       constructor(startState: T, allowImplicitSelfTransition: boolean = false) {
          this.currentState = startState;
@@ -75,7 +75,7 @@ namespace typestate {
       /**
        * Listen for the transition to this state and fire the associated callback
        */
-      public on(state: T, callback: (from?: T, event?: any) => any): FiniteStateMachine<T> {
+      public on(state: T, callback: (from: T, event?: any) => any): FiniteStateMachine<T> {
          var key = state.toString();
          if (!this._onCallbacks[key]) {
             this._onCallbacks[key] = [];
@@ -88,7 +88,7 @@ namespace typestate {
        * Listen for the transition to this state and fire the associated callback, returning
        * false in the callback will block the transition to this state.
        */
-      public onEnter(state: T, callback: (from?: T, event?: any) => boolean|Promise<boolean>): FiniteStateMachine<T> {
+      public onEnter(state: T, callback: (from: T, event?: any) => boolean|Promise<boolean>): FiniteStateMachine<T> {
          var key = state.toString();
          if (!this._enterCallbacks[key]) {
             this._enterCallbacks[key] = [];
@@ -101,7 +101,7 @@ namespace typestate {
        * Listen for the transition to this state and fire the associated callback, returning
        * false in the callback will block the transition from this state.
        */
-      public onExit(state: T, callback: (to?: T) => boolean|Promise<boolean>): FiniteStateMachine<T> {
+      public onExit(state: T, callback: (to: T) => boolean|Promise<boolean>): FiniteStateMachine<T> {
          var key = state.toString();
          if (!this._exitCallbacks[key]) {
             this._exitCallbacks[key] = [];
@@ -114,7 +114,7 @@ namespace typestate {
        * List for an invalid transition and handle the error, returning a falsy value will throw an
        * exception, a truthy one will swallow the exception
        */
-      public onInvalidTransition(callback: (from?: T, to?: T) => boolean): FiniteStateMachine<T> {
+      public onInvalidTransition(callback: (from: T, to: T) => boolean): FiniteStateMachine<T> {
          if(!this._invalidTransitionCallback){
             this._invalidTransitionCallback = callback
          }
